@@ -268,6 +268,11 @@ public class FloatingWindowService extends Service {
         }
     }
     String[] name = {" ","A","2","3","4","5","6","7","8","9","10","J","Q","K","王"};
+
+    /**
+     * 更新界面上记牌器的显示，传入的参数为此次更新需要减点的点数
+     * @param value
+     */
     public void updateContent(int[] value){
         for (int i = 1; i < 15; i++) {
             cardCounts[i] -= value[i];
@@ -276,6 +281,9 @@ public class FloatingWindowService extends Service {
         }
     }
 
+    /**
+     * 更新玩家当前的出牌数，以及当前时间
+     */
     public void updatePlayerCard(){
         StringBuilder s1 = new StringBuilder();
         StringBuilder s2 = new StringBuilder();

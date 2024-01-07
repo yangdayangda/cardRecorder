@@ -81,6 +81,15 @@ public class CardDetectionUtil {
                 rect1.y + rect1.height > rect2.y);
     }
 
+    /**
+     * 获取图像中存在的点数
+     * @param context
+     * @param inputBitmap 输入图像
+     * @param threshold 阈值，阈值越大，要求的精度越高
+     * @param handCard 是否是手牌，由于手牌和出牌区的牌大小不一致，所以需要区分
+     * @param ratio 缩放比例，适配不同屏幕大小
+     * @return 返回一个点数的数组，1到14，分别对应A，2,3,4,5... J,Q,K,王
+     */
     public static int[] findMatches(Context context, Bitmap inputBitmap, double threshold, boolean handCard, float ratio) {
         int[] result = new int[15];
         float scale = handCard ? 80f : 60f;
