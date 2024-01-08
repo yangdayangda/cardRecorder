@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.opencv.android.OpenCVLoader;
@@ -29,16 +31,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         OpenCVLoader.initDebug();
-        if (!checkOverlayDisplayPermission()) {
-            requestOverlayDisplayPermission();
-        }else {
-            initMediaProjectionManager();
-        }
+        if (!checkOverlayDisplayPermission()) requestOverlayDisplayPermission();
         Button initButton = findViewById(R.id.init);
         initButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                initMediaProjectionManager();
+            }
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
+        int time = sharedPreferences.getInt("time", 2000);
+        EditText editText = findViewById(R.id.editTextNumberSigned);
+        editText.setText(String.valueOf(time));
+
+        Button save = findViewById(R.id.button);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                EditText editText = findViewById(R.id.editTextNumberSigned);
+                Integer time = Integer.valueOf(editText.getText().toString());
+                editor.putInt("time",time);
+                editor.apply();  // 提交保存
+                Toast.makeText(MainActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
             }
         });
     }

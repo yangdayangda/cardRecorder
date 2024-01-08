@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,6 +50,8 @@ public class FloatingWindowService extends Service {
     private int[] player1 = {1890, 321, 2664, 554};
     private int[] player2 = {460, 321, 1300, 554};
     private float ratio;//适配不同屏幕大小，需要缩放或扩大的比例
+
+    private int time;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -76,7 +79,8 @@ public class FloatingWindowService extends Service {
         floatWindowLayoutParam.gravity = Gravity.CENTER;
         floatWindowLayoutParam.x = 0;
         floatWindowLayoutParam.y = 0;
-
+        SharedPreferences sharedPreferences = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
+        time = sharedPreferences.getInt("time", 2000);
         windowManager.addView(floatView, floatWindowLayoutParam);
         //触摸移动悬浮框
         floatView.setOnTouchListener(new View.OnTouchListener() {
@@ -264,7 +268,7 @@ public class FloatingWindowService extends Service {
                     updatePlayerCard();
                     startScreenShot();
                 }
-            }, 1000);
+            }, time);
         }
     }
     String[] name = {" ","A","2","3","4","5","6","7","8","9","10","J","Q","K","王"};
